@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LPMS望聞問設圖表生成器</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+</head>
+<body>
+    <div class="zoom-controls-top">
+        <button class="btn btn-zoom" id="zoom-out" title="縮小版面">➖</button>
+        <span class="zoom-level" id="zoom-level">100%</span>
+        <button class="btn btn-zoom" id="zoom-in" title="放大版面">➕</button>
+    </div>
+
+    <div class="container" id="main-container">
+        <header class="header">
+            <div class="header-content">
+                <div class="header-mascot-left">
+                    <img src="lpms-mascot.png" alt="LPMS吉祥物" class="mascot-image">
+                </div>
+                <div class="header-text">
+                    <h1 class="title">📊 LPMS望聞問設圖表生成器</h1>
+                    <p class="subtitle">九龍婦女福利會李炳紀念學校AI平台 - LPedia</p>
+                </div>
+                <div class="header-mascot">
+                    <img src="lpms-mascot.png" alt="LPMS吉祥物" class="mascot-image">
+                </div>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <div class="control-panel">
+                <div class="panel-section">
+                    <h3>📊 圖表類型</h3>
+                    <div class="chart-type-grid">
+                        <button class="chart-type-btn active" data-type="bar">
+                            <span class="icon">📊</span>
+                            <span>棒形圖</span>
+                        </button>
+                        <button class="chart-type-btn" data-type="line">
+                            <span class="icon">📈</span>
+                            <span>折線圖</span>
+                        </button>
+                        <button class="chart-type-btn" data-type="pie">
+                            <span class="icon">🥧</span>
+                            <span>圓餅圖</span>
+                        </button>
+                        <button class="chart-type-btn" data-type="doughnut">
+                            <span class="icon">🍩</span>
+                            <span>環狀圖</span>
+                        </button>
+                        <button class="chart-type-btn" data-type="radar">
+                            <span class="icon">🎯</span>
+                            <span>雷達圖</span>
+                        </button>
+                        <button class="chart-type-btn" data-type="polarArea">
+                            <span class="icon">🌟</span>
+                            <span>極區圖</span>
+                        </button>
+                        <button class="chart-type-btn" data-type="mixed">
+                            <span class="icon">📈📊</span>
+                            <span>複合圖</span>
+                        </button>
+                    </div>
+                    <div class="mixed-chart-controls" id="mixed-chart-controls" style="display: none;">
+                        <h4>複合圖表設定</h4>
+                        <div class="mixed-type-selector">
+                            <label>
+                                <input type="radio" name="mixed-type" value="double-bar" checked>
+                                <span>雙棒形圖</span>
+                            </label>
+                            <label>
+                                <input type="radio" name="mixed-type" value="double-line">
+                                <span>雙折線圖</span>
+                            </label>
+                            <label>
+                                <input type="radio" name="mixed-type" value="line-bar">
+                                <span>折線+棒形</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <h3>📝 圖表設定</h3>
+                    <div class="input-group">
+                        <label for="chart-title">圖表標題</label>
+                        <input type="text" id="chart-title" placeholder="輸入圖表標題" value="LPMS數據分析報告">
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <h3>🏷️ 數據標籤</h3>
+                    <div class="input-group">
+                        <label for="y-label">第一組數據標籤</label>
+                        <input type="text" id="y-label" placeholder="例如: 銷售額" value="銷售額">
+                    </div>
+                    <div class="input-group dual-data-controls" id="dual-data-controls" style="display: none;">
+                        <label for="y-label-2">第二組數據標籤</label>
+                        <input type="text" id="y-label-2" placeholder="例如: 利潤" value="利潤">
+                    </div>
+                    <div class="input-group">
+                        <label>橫向標籤與數據</label>
+                        <div class="data-grid" id="data-grid">
+                            <div class="data-row">
+                                <input type="text" class="label-input" placeholder="標籤" value="一月">
+                                <input type="number" class="value-input" placeholder="數值1" value="120">
+                                <input type="number" class="value-input-2" placeholder="數值2" value="80" style="display: none;">
+                                <input type="color" class="color-input" value="#3498db" title="顏色">
+                                <button class="btn btn-danger btn-small remove-row">-</button>
+                            </div>
+                            <div class="data-row">
+                                <input type="text" class="label-input" placeholder="標籤" value="二月">
+                                <input type="number" class="value-input" placeholder="數值1" value="190">
+                                <input type="number" class="value-input-2" placeholder="數值2" value="140" style="display: none;">
+                                <input type="color" class="color-input" value="#e74c3c" title="顏色">
+                                <button class="btn btn-danger btn-small remove-row">-</button>
+                            </div>
+                            <div class="data-row">
+                                <input type="text" class="label-input" placeholder="標籤" value="三月">
+                                <input type="number" class="value-input" placeholder="數值1" value="300">
+                                <input type="number" class="value-input-2" placeholder="數值2" value="250" style="display: none;">
+                                <input type="color" class="color-input" value="#2ecc71" title="顏色">
+                                <button class="btn btn-danger btn-small remove-row">-</button>
+                            </div>
+                            <div class="data-row">
+                                <input type="text" class="label-input" placeholder="標籤" value="四月">
+                                <input type="number" class="value-input" placeholder="數值1" value="500">
+                                <input type="number" class="value-input-2" placeholder="數值2" value="430" style="display: none;">
+                                <input type="color" class="color-input" value="#f39c12" title="顏色">
+                                <button class="btn btn-danger btn-small remove-row">-</button>
+                            </div>
+                            <div class="data-row">
+                                <input type="text" class="label-input" placeholder="標籤" value="五月">
+                                <input type="number" class="value-input" placeholder="數值1" value="200">
+                                <input type="number" class="value-input-2" placeholder="數值2" value="160" style="display: none;">
+                                <input type="color" class="color-input" value="#9b59b6" title="顏色">
+                                <button class="btn btn-danger btn-small remove-row">-</button>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary btn-small" id="add-data-row">+ 新增數據項</button>
+                    </div>
+                </div>
+
+
+
+                                <div class="panel-section">
+                    <h3>🎨 樣式設定</h3>
+                    <div class="style-controls">
+                        <div class="input-group">
+                            <label for="chart-color">圖表主色調</label>
+                            <div class="color-picker-container">
+                                <input type="color" id="chart-color" value="#3498db">
+                                <div class="color-presets">
+                                    <button class="color-preset" data-color="#3498db" style="background: #3498db;" title="藍色"></button>
+                                    <button class="color-preset" data-color="#e74c3c" style="background: #e74c3c;" title="紅色"></button>
+                                    <button class="color-preset" data-color="#2ecc71" style="background: #2ecc71;" title="綠色"></button>
+                                    <button class="color-preset" data-color="#f39c12" style="background: #f39c12;" title="橙色"></button>
+                                    <button class="color-preset" data-color="#9b59b6" style="background: #9b59b6;" title="紫色"></button>
+                                    <button class="color-preset" data-color="#1abc9c" style="background: #1abc9c;" title="青色"></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" id="show-legend" checked>
+                                <span class="checkmark"></span>
+                                顯示圖例
+                            </label>
+                            <label>
+                                <input type="checkbox" id="show-animation" checked>
+                                <span class="checkmark"></span>
+                                啟用動畫
+                            </label>
+                            <label>
+                                <input type="checkbox" id="show-grid" checked>
+                                <span class="checkmark"></span>
+                                顯示網格
+                            </label>
+                            <label>
+                                <input type="checkbox" id="enable-mixed-chart">
+                                <span class="checkmark"></span>
+                                啟用複合圖表
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <button class="btn btn-success btn-large" id="generate-chart">
+                        ✨ 生成圖表
+                    </button>
+                </div>
+            </div>
+
+            <div class="chart-panel">
+                <div class="chart-container" id="chart-container">
+                    <canvas id="myChart"></canvas>
+                </div>
+                <div class="chart-actions">
+                    <button class="btn btn-outline" id="download-chart">📥 下載圖表</button>
+                    <button class="btn btn-outline" id="reset-chart">🔄 重設</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>正在生成圖表...</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 

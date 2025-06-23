@@ -1,0 +1,1097 @@
+/* 重置樣式和全局設定 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* 標題區域 */
+.header {
+    margin-bottom: 40px;
+    animation: fadeInDown 0.8s ease-out;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.header-text {
+    text-align: center;
+}
+
+.header-mascot {
+    flex-shrink: 0;
+}
+
+.header-mascot-left {
+    flex-shrink: 0;
+}
+
+.title {
+    font-size: 3rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 10px;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 300;
+}
+
+.mascot-image {
+    width: 120px;
+    height: auto;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease;
+    background: transparent;
+}
+
+.mascot-image:hover {
+    transform: scale(1.05) rotate(2deg);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+
+/* 主內容區域 */
+.main-content {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 30px;
+    animation: fadeInUp 0.8s ease-out 0.2s both;
+}
+
+/* 控制面板 */
+.control-panel {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    backdrop-filter: blur(10px);
+    height: fit-content;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.panel-section {
+    margin-bottom: 30px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.panel-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.panel-section h3 {
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+/* 圖表類型選擇 */
+.chart-type-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+/* 複合圖表按鈕特殊樣式 */
+.chart-type-btn[data-type="mixed"] {
+    grid-column: span 2;
+}
+
+.chart-type-btn[data-type="mixed"] .icon {
+    font-size: 1.2rem;
+}
+
+/* 顏色選擇器樣式 */
+.color-picker-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+#chart-color {
+    width: 50px;
+    height: 40px;
+    border: 2px solid #e3e8ee;
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 2px;
+    transition: all 0.3s ease;
+}
+
+#chart-color:hover {
+    border-color: #3498db;
+    transform: scale(1.05);
+}
+
+.color-presets {
+    display: flex;
+    gap: 8px;
+}
+
+.color-preset {
+    width: 32px;
+    height: 32px;
+    border: 2px solid #e3e8ee;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.color-preset:hover {
+    transform: scale(1.1);
+    border-color: #3498db;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.color-preset.active::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+
+/* 複合圖表控制 */
+.mixed-chart-controls {
+    background: #f0f4f8;
+    border-radius: 12px;
+    padding: 15px;
+    margin-top: 15px;
+    border: 1px solid #e3e8ee;
+}
+
+.mixed-chart-controls h4 {
+    margin: 0 0 10px 0;
+    color: #2c3e50;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.mixed-type-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.mixed-type-selector label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 8px 12px;
+    background: white;
+    border-radius: 8px;
+    border: 2px solid #e3e8ee;
+    transition: all 0.3s ease;
+}
+
+.mixed-type-selector label:hover {
+    border-color: #3498db;
+    background: #f8f9fa;
+}
+
+.mixed-type-selector input[type="radio"] {
+    margin-right: 10px;
+}
+
+.mixed-type-selector input[type="radio"]:checked + span {
+    color: #3498db;
+    font-weight: 600;
+}
+
+.chart-type-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px 10px;
+    border: 2px solid #e3e8ee;
+    border-radius: 12px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-family: inherit;
+    position: relative;
+    overflow: hidden;
+}
+
+.chart-type-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    transition: left 0.5s;
+}
+
+.chart-type-btn:hover::before {
+    left: 100%;
+}
+
+.chart-type-btn .icon {
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+}
+
+.chart-type-btn span:last-child {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #555;
+}
+
+.chart-type-btn:hover {
+    border-color: #3498db;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(52, 152, 219, 0.3);
+}
+
+.chart-type-btn.active {
+    border-color: #3498db;
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+    box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
+}
+
+.chart-type-btn.active span:last-child {
+    color: white;
+}
+
+/* 輸入組件 */
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #2c3e50;
+    font-size: 0.9rem;
+}
+
+.input-group input[type="text"] {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e3e8ee;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.input-group input[type="text"]:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    transform: translateY(-1px);
+}
+
+/* 移除了數據集管理相關樣式 */
+
+/* 按鈕樣式 */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    text-decoration: none;
+    font-family: inherit;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s, height 0.3s;
+}
+
+.btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    color: white;
+    box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    color: white;
+    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+}
+
+.btn-outline {
+    background: transparent;
+    border: 2px solid #3498db;
+    color: #3498db;
+}
+
+.btn-outline:hover {
+    background: #3498db;
+    color: white;
+}
+
+.btn-small {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+}
+
+.btn-large {
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    width: 100%;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+/* 複選框樣式 */
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 0.9rem;
+    position: relative;
+    padding-left: 35px;
+}
+
+.checkbox-group input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.checkmark {
+    position: absolute;
+    left: 0;
+    top: 2px;
+    height: 20px;
+    width: 20px;
+    background-color: #eee;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    border: 2px solid #ddd;
+}
+
+.checkbox-group label:hover input ~ .checkmark {
+    background-color: #ccc;
+    border-color: #3498db;
+}
+
+.checkbox-group label input:checked ~ .checkmark {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    border-color: #3498db;
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.checkbox-group label input:checked ~ .checkmark:after {
+    display: block;
+}
+
+.checkbox-group label .checkmark:after {
+    left: 6px;
+    top: 2px;
+    width: 6px;
+    height: 12px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+/* 圖表面板 */
+.chart-panel {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.chart-container {
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    position: relative;
+    overflow: hidden;
+    height: 500px;
+    min-height: 500px;
+}
+
+.chart-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #3498db, #2ecc71, #f39c12, #e74c3c);
+}
+
+.chart-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+/* 載入動畫 */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.loading-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.loading-spinner {
+    text-align: center;
+    color: white;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid rgba(255,255,255,0.3);
+    border-top: 4px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+.loading-spinner p {
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+/* 動畫定義 */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+/* 響應式設計 */
+/* iPad Pro和大型平板 */
+@media (max-width: 1366px) and (min-width: 1024px) {
+    .container {
+        padding: 15px;
+        max-width: 100%;
+    }
+    
+    .main-content {
+        grid-template-columns: 1fr 1.5fr;
+        gap: 20px;
+    }
+    
+    .chart-container {
+        height: 450px;
+        min-height: 450px;
+    }
+    
+    .chart-type-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+    
+    .color-presets {
+        flex-wrap: wrap;
+    }
+}
+
+/* iPad標準尺寸 */
+@media (max-width: 1024px) and (min-width: 768px) {
+    .container {
+        padding: 12px;
+        max-width: 100%;
+    }
+    
+    .main-content {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .chart-container {
+        height: 400px;
+        min-height: 400px;
+    }
+    
+    .chart-type-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+    }
+    
+    .control-panel, .chart-panel {
+        padding: 20px;
+    }
+    
+    .color-picker-container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .main-content {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .chart-type-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+    
+    .header-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+    
+    .header-text {
+        text-align: center;
+    }
+    
+    .mascot-image {
+        width: 100px;
+    }
+    
+    .title {
+        font-size: 2.2rem;
+    }
+    
+    .subtitle {
+        font-size: 1rem;
+    }
+    
+    .control-panel, .chart-panel {
+        padding: 20px;
+    }
+    
+    .chart-container {
+        height: 400px;
+        min-height: 400px;
+    }
+    
+    .chart-type-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+    
+    .chart-type-btn {
+        padding: 12px 8px;
+    }
+    
+    .chart-type-btn .icon {
+        font-size: 1.2rem;
+    }
+    
+    .chart-type-btn span:last-child {
+        font-size: 0.8rem;
+    }
+    
+    /* 移除了數據集相關響應式樣式 */
+    
+    .data-row {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto auto auto;
+        gap: 8px;
+        text-align: center;
+    }
+    
+    .data-row input,
+    .data-row button {
+        width: 100%;
+    }
+    
+    .data-row .color-input {
+        width: 50px;
+        margin: 0 auto;
+    }
+    
+    .data-grid {
+        max-height: 300px;
+    }
+    
+    .chart-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .title {
+        font-size: 1.8rem;
+    }
+    
+    .control-panel, .chart-panel {
+        padding: 15px;
+        border-radius: 15px;
+    }
+    
+    .chart-container {
+        height: 350px;
+        min-height: 350px;
+    }
+    
+    .chart-type-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .data-grid {
+        max-height: 250px;
+        padding: 10px;
+    }
+    
+    .data-row {
+        padding: 8px;
+    }
+}
+
+/* iframe嵌入優化 */
+.iframe-mode {
+    min-height: auto;
+    padding: 10px;
+}
+
+.iframe-mode .header {
+    margin-bottom: 20px;
+}
+
+.iframe-mode .title {
+    font-size: 1.8rem;
+}
+
+.iframe-mode .subtitle {
+    font-size: 0.9rem;
+}
+
+.iframe-mode .main-content {
+    grid-template-columns: 1fr;
+    gap: 15px;
+}
+
+.iframe-mode .control-panel,
+.iframe-mode .chart-panel {
+    padding: 15px;
+}
+
+.iframe-mode .chart-container {
+    height: 300px;
+    min-height: 300px;
+}
+
+/* 自動檢測iframe環境 */
+@media (max-height: 600px) {
+    .container {
+        padding: 8px;
+    }
+    
+    .header {
+        margin-bottom: 15px;
+    }
+    
+    .title {
+        font-size: 1.5rem;
+    }
+    
+    .subtitle {
+        font-size: 0.8rem;
+    }
+    
+    .main-content {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .control-panel, .chart-panel {
+        padding: 12px;
+    }
+    
+    .chart-container {
+        height: 250px;
+        min-height: 250px;
+    }
+    
+    .panel-section {
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+    }
+}
+
+/* 滾動條美化 */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.1);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.3);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255,255,255,0.5);
+}
+
+/* 圖表動畫效果 */
+.chart-container canvas {
+    animation: chartFadeIn 0.8s ease-out;
+}
+
+@keyframes chartFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* 數據網格樣式 */
+.data-grid {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 15px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.data-row {
+    display: grid;
+    grid-template-columns: 5fr 1fr 1fr auto auto;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+    animation: slideInLeft 0.3s ease-out;
+}
+
+/* 當啟用雙數據模式時調整格子佈局 */
+.dual-data-mode .data-row {
+    grid-template-columns: 5fr 0.8fr 0.8fr auto auto;
+}
+
+/* 個別顏色選擇器 */
+.color-input {
+    width: 35px;
+    height: 35px;
+    border: 2px solid #e3e8ee;
+    border-radius: 6px;
+    cursor: pointer;
+    padding: 2px;
+    transition: all 0.3s ease;
+}
+
+.color-input:hover {
+    border-color: #3498db;
+    transform: scale(1.05);
+}
+
+.data-row:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.data-row:last-child {
+    margin-bottom: 0;
+}
+
+.label-input, .value-input {
+    padding: 8px 12px;
+    border: 2px solid #e3e8ee;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.label-input:focus, .value-input:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    transform: translateY(-1px);
+}
+
+.label-input {
+    font-weight: 500;
+    min-width: 150px;
+    width: 100%;
+    font-size: 1rem;
+    padding: 10px 12px;
+}
+
+.value-input {
+    text-align: center;
+    font-weight: 600;
+    color: #2c3e50;
+    min-width: 80px;
+    width: 100%;
+}
+
+.remove-row {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 50%;
+}
+
+/* 成功訊息樣式 */
+.success-message {
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 500;
+    animation: slideInDown 0.5s ease-out;
+}
+
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+} 
+
+/* 頂部縮放控制樣式 */
+.zoom-controls-top {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 8px 16px;
+    border-radius: 25px;
+    border: 1px solid #e3e8ee;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+}
+
+.btn-zoom {
+    background: #3498db;
+    color: white;
+    border: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-zoom:hover {
+    background: #2980b9;
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+}
+
+.btn-zoom:active {
+    transform: scale(0.95);
+}
+
+.zoom-level {
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 1rem;
+    min-width: 45px;
+    text-align: center;
+}
+
+/* 支持第二組數據輸入 */
+.value-input-2 {
+    padding: 8px 12px;
+    border: 2px solid #e3e8ee;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.value-input-2:focus {
+    outline: none;
+    border-color: #e74c3c;
+    box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+    transform: translateY(-1px);
+}
+
+/* 響應式縮放控制 */
+@media (max-width: 768px) {
+    .zoom-controls-top {
+        top: 10px;
+        right: 10px;
+        padding: 6px 12px;
+        gap: 10px;
+    }
+    
+    .btn-zoom {
+        width: 30px;
+        height: 30px;
+        font-size: 1rem;
+    }
+    
+    .zoom-level {
+        font-size: 0.9rem;
+        min-width: 40px;
+    }
+}
+
+/* 確保縮放後的版面不會溢出 */
+body {
+    overflow-x: auto;
+    transition: padding-top 0.3s ease;
+} 
