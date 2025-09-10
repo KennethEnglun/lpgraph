@@ -30,11 +30,11 @@ const elements = {
     downloadButton: document.getElementById('download-chart'),
     resetButton: document.getElementById('reset-chart'),
     loadingOverlay: document.getElementById('loading-overlay'),
-    autoScaleXCheckbox: document.getElementById('auto-scale-x'),
-    xMinInput: document.getElementById('x-min'),
-    xMaxInput: document.getElementById('x-max'),
-    xAxisManualScale: document.getElementById('x-axis-manual-scale'),
-    xAxisManualScaleMax: document.getElementById('x-axis-manual-scale-max')
+    autoScaleYCheckbox: document.getElementById('auto-scale-y'),
+    yMinInput: document.getElementById('y-min'),
+    yMaxInput: document.getElementById('y-max'),
+    yAxisManualScale: document.getElementById('y-axis-manual-scale'),
+    yAxisManualScaleMax: document.getElementById('y-axis-manual-scale-max')
 };
 
 const colorPalette = [
@@ -47,8 +47,8 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeEventListeners();
     // 初始化顏色選擇器
     updateColorPresetSelection('#3498db');
-    // 初始化X軸範圍設定
-    toggleXAxisScaleInputs();
+    // 初始化Y軸範圍設定
+    toggleYAxisScaleInputs();
     generateChart();
 });
 
@@ -79,10 +79,10 @@ function initializeEventListeners() {
     elements.zoomInButton.addEventListener('click', zoomIn);
     elements.zoomOutButton.addEventListener('click', zoomOut);
 
-    // X軸範圍控制
-    elements.autoScaleXCheckbox.addEventListener('change', toggleXAxisScaleInputs);
-    elements.xMinInput.addEventListener('input', debounce(generateChart, 500));
-    elements.xMaxInput.addEventListener('input', debounce(generateChart, 500));
+    // Y軸範圍控制
+    elements.autoScaleYCheckbox.addEventListener('change', toggleYAxisScaleInputs);
+    elements.yMinInput.addEventListener('input', debounce(generateChart, 500));
+    elements.yMaxInput.addEventListener('input', debounce(generateChart, 500));
 
     // 移除自動生成功能，只有點擊按鈕才生成圖表
     // const inputElements = [
@@ -242,14 +242,14 @@ function toggleMixedChart() {
 }
 
 // X軸範圍手動輸入框切換
-function toggleXAxisScaleInputs() {
-    const isAutoScale = elements.autoScaleXCheckbox.checked;
+function toggleYAxisScaleInputs() {
+    const isAutoScale = elements.autoScaleYCheckbox.checked;
     if (isAutoScale) {
-        elements.xAxisManualScale.style.display = 'none';
-        elements.xAxisManualScaleMax.style.display = 'none';
+        elements.yAxisManualScale.style.display = 'none';
+        elements.yAxisManualScaleMax.style.display = 'none';
     } else {
-        elements.xAxisManualScale.style.display = 'block';
-        elements.xAxisManualScaleMax.style.display = 'block';
+        elements.yAxisManualScale.style.display = 'block';
+        elements.yAxisManualScaleMax.style.display = 'block';
     }
     generateChart();
 }
@@ -259,10 +259,6 @@ function getMixedChartType() {
     return selectedRadio ? selectedRadio.value : 'double-bar';
 }
 
-// X軸範圍配置函數 - 返回空對象，範圍控制通過數據過濾實現
-function getXAxisRangeConfig(labels) {
-    return {}; // 範圍控制通過過濾數據實現，不在這裡處理
-}
 
 // 縮放功能
 function zoomIn() {
@@ -325,46 +321,9 @@ function getDataFromGrid() {
         }
     });
     
-    // 根據X軸範圍設定過濾數據
-    return filterDataByXAxisRange({ labels, values, values2, colors });
+    return { labels, values, values2, colors };
 }
 
-// 根據X軸範圍設定過濾數據
-function filterDataByXAxisRange(data) {
-    if (elements.autoScaleXCheckbox.checked) {
-        return data; // 自動調節，返回所有數據
-    }
-    
-    const minValue = parseFloat(elements.xMinInput.value);
-    const maxValue = parseFloat(elements.xMaxInput.value);
-    
-    if (isNaN(minValue) && isNaN(maxValue)) {
-        return data; // 沒有設定範圍，返回所有數據
-    }
-    
-    let startIndex = 0;
-    let endIndex = data.labels.length;
-    
-    if (!isNaN(minValue)) {
-        startIndex = Math.max(0, Math.floor(minValue) - 1);
-    }
-    
-    if (!isNaN(maxValue)) {
-        endIndex = Math.min(data.labels.length, Math.ceil(maxValue));
-    }
-    
-    // 確保範圍有效
-    if (startIndex >= endIndex) {
-        return data; // 無效範圍，返回所有數據
-    }
-    
-    return {
-        labels: data.labels.slice(startIndex, endIndex),
-        values: data.values.slice(startIndex, endIndex),
-        values2: data.values2.slice(startIndex, endIndex),
-        colors: data.colors.slice(startIndex, endIndex)
-    };
-}
 
 function getDatasets() {
     const baseData = getDataFromGrid();
@@ -634,7 +593,10 @@ function getChartConfig(type, labels, datasets) {
                     },
                     ticks: {
                         padding: 10
-                    }
+                    },
+                    // Y軸範圍自動調節和手動設定
+                    min: elements.autoScaleYCheckbox.checked ? undefined : parseFloat(elements.yMinInput.value) || undefined,
+                    max: elements.autoScaleYCheckbox.checked ? undefined : parseFloat(elements.yMaxInput.value) || undefined
                 },
                 y1: {
                     type: 'linear',
@@ -666,8 +628,6 @@ function getChartConfig(type, labels, datasets) {
                     ticks: {
                         padding: 10,
                         maxRotation: 45,
-                        // X軸範圍控制 - 通過控制顯示的標籤數量
-                        ...(getXAxisRangeConfig(labels))
                     }
                 }
             };
@@ -693,7 +653,10 @@ function getChartConfig(type, labels, datasets) {
                     },
                     ticks: {
                         padding: 10
-                    }
+                    },
+                    // Y軸範圍自動調節和手動設定
+                    min: elements.autoScaleYCheckbox.checked ? undefined : parseFloat(elements.yMinInput.value) || undefined,
+                    max: elements.autoScaleYCheckbox.checked ? undefined : parseFloat(elements.yMaxInput.value) || undefined
                 },
                 x: {
                     grid: {
@@ -703,8 +666,6 @@ function getChartConfig(type, labels, datasets) {
                     ticks: {
                         padding: 10,
                         maxRotation: 45,
-                        // X軸範圍控制 - 通過控制顯示的標籤數量
-                        ...(getXAxisRangeConfig(labels))
                     }
                 }
             };
@@ -730,7 +691,10 @@ function getChartConfig(type, labels, datasets) {
                     },
                     ticks: {
                         padding: 10
-                    }
+                    },
+                    // Y軸範圍自動調節和手動設定
+                    min: elements.autoScaleYCheckbox.checked ? undefined : parseFloat(elements.yMinInput.value) || undefined,
+                    max: elements.autoScaleYCheckbox.checked ? undefined : parseFloat(elements.yMaxInput.value) || undefined
                 },
                 x: {
                     grid: {
@@ -740,8 +704,6 @@ function getChartConfig(type, labels, datasets) {
                     ticks: {
                         padding: 10,
                         maxRotation: 45,
-                        // X軸範圍控制 - 通過控制顯示的標籤數量
-                        ...(getXAxisRangeConfig(labels))
                     }
                 }
             };
@@ -810,12 +772,12 @@ function resetChart() {
         // 重設顏色選擇器
         updateColorPresetSelection('#3498db');
 
-        // 重設X軸範圍設定
-        elements.autoScaleXCheckbox.checked = true;
-        elements.xAxisManualScale.style.display = 'none';
-        elements.xAxisManualScaleMax.style.display = 'none';
-        elements.xMinInput.value = '';
-        elements.xMaxInput.value = '';
+        // 重設Y軸範圍設定
+        elements.autoScaleYCheckbox.checked = true;
+        elements.yAxisManualScale.style.display = 'none';
+        elements.yAxisManualScaleMax.style.display = 'none';
+        elements.yMinInput.value = '';
+        elements.yMaxInput.value = '';
         
         elements.chartTypeButtons.forEach(btn => btn.classList.remove('active'));
         elements.chartTypeButtons[0].classList.add('active');

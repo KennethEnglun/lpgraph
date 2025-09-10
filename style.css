@@ -1088,27 +1088,27 @@ body {
     transition: padding-top 0.3s ease;
 } 
 
-/* X軸範圍手動設定樣式 */
-.x-axis-manual-scale {
+/* Y軸範圍手動設定樣式 */
+.y-axis-manual-scale {
     display: flex;
     align-items: center;
     gap: 10px;
     margin-top: 10px;
 }
 
-.x-axis-manual-scale label {
+.y-axis-manual-scale label {
     min-width: 60px; /* 確保標籤對齊 */
     margin-bottom: 0;
 }
 
-.x-axis-manual-scale input[type="text"] {
+.y-axis-manual-scale input[type="number"] {
     flex-grow: 1;
     max-width: 150px; /* 限制輸入框寬度 */
 }
 
-/* 確保X軸範圍設定區域可見 */
-#x-axis-manual-scale,
-#x-axis-manual-scale-max {
+/* 確保Y軸範圍設定區域可見 */
+#y-axis-manual-scale,
+#y-axis-manual-scale-max {
     display: none; /* 默認隱藏，由JavaScript控制 */
 }
 
