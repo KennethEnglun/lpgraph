@@ -1104,4 +1104,18 @@ body {
 .x-axis-manual-scale input[type="text"] {
     flex-grow: 1;
     max-width: 150px; /* 限制輸入框寬度 */
+}
+
+/* 確保X軸範圍設定區域可見 */
+#x-axis-manual-scale,
+#x-axis-manual-scale-max {
+    display: none; /* 默認隱藏，由JavaScript控制 */
+}
+
+/* X軸範圍設定區域樣式 */
+.panel-section h3 {
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    color: #2c3e50;
+    font-weight: 600;
 } 

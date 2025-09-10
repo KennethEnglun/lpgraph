@@ -47,6 +47,8 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeEventListeners();
     // 初始化顏色選擇器
     updateColorPresetSelection('#3498db');
+    // 初始化X軸範圍設定
+    toggleXAxisScaleInputs();
     generateChart();
 });
 
