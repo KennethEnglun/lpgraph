@@ -173,6 +173,72 @@ function showSecondDataInputs(show) {
     }
 }
 
+// 移除數據行
+function removeDataRow(dataRow) {
+    if (elements.dataGrid.children.length > 1) {
+        dataRow.style.animation = 'slideInLeft 0.3s ease-out reverse';
+        setTimeout(() => {
+            dataRow.remove();
+        }, 300);
+    } else {
+        showNotification('至少需要保留一個數據項！', 'warning');
+    }
+}
+
+// 檢測iframe模式
+function detectIframeMode() {
+    if (window !== window.top) {
+        document.body.classList.add('iframe-mode');
+    }
+}
+
+// 顏色選擇器功能
+function updateChartColor() {
+    const color = elements.chartColorInput.value;
+    updateColorPresetSelection(color);
+}
+
+function selectColorPreset(presetButton) {
+    const color = presetButton.dataset.color;
+    elements.chartColorInput.value = color;
+    updateColorPresetSelection(color);
+}
+
+function updateColorPresetSelection(selectedColor) {
+    elements.colorPresets.forEach(preset => {
+        preset.classList.remove('active');
+        if (preset.dataset.color === selectedColor) {
+            preset.classList.add('active');
+        }
+    });
+}
+
+// 複合圖表功能
+function toggleMixedChart() {
+    const isMixed = elements.enableMixedChartCheckbox.checked;
+    if (isMixed) {
+        elements.mixedChartControls.style.display = 'block';
+        elements.dualDataControls.style.display = 'block';
+        // 顯示第二組數據輸入欄
+        showSecondDataInputs(true);
+        // 自動選擇複合圖表類型
+        const mixedButton = document.querySelector('[data-type="mixed"]');
+        if (mixedButton) {
+            selectChartType(mixedButton);
+        }
+    } else {
+        elements.mixedChartControls.style.display = 'none';
+        elements.dualDataControls.style.display = 'none';
+        // 隱藏第二組數據輸入欄
+        showSecondDataInputs(false);
+        // 回到預設圖表類型
+        const barButton = document.querySelector('[data-type="bar"]');
+        if (barButton) {
+            selectChartType(barButton);
+        }
+    }
+}
+
 // X軸範圍手動輸入框切換
 function toggleXAxisScaleInputs() {
     const isAutoScale = elements.autoScaleXCheckbox.checked;
