@@ -1087,3 +1087,21 @@ body {
     overflow-x: auto;
     transition: padding-top 0.3s ease;
 } 
+
+/* X軸範圍手動設定樣式 */
+.x-axis-manual-scale {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.x-axis-manual-scale label {
+    min-width: 60px; /* 確保標籤對齊 */
+    margin-bottom: 0;
+}
+
+.x-axis-manual-scale input[type="text"] {
+    flex-grow: 1;
+    max-width: 150px; /* 限制輸入框寬度 */
+} 
