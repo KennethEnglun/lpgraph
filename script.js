@@ -12,6 +12,7 @@ const elements = {
     chartTypeButtons: document.querySelectorAll('.chart-type-btn'),
     dataGrid: document.getElementById('data-grid'),
     yLabelInput: document.getElementById('y-label'),
+    xLabelInput: document.getElementById('x-label'),
     yLabel2Input: document.getElementById('y-label-2'),
     dualDataControls: document.getElementById('dual-data-controls'),
     chartTitleInput: document.getElementById('chart-title'),
@@ -83,6 +84,12 @@ function initializeEventListeners() {
     elements.autoScaleYCheckbox.addEventListener('change', toggleYAxisScaleInputs);
     elements.yMinInput.addEventListener('input', debounce(generateChart, 500));
     elements.yMaxInput.addEventListener('input', debounce(generateChart, 500));
+    
+    // 標籤輸入監聽
+    elements.chartTitleInput.addEventListener('input', debounce(generateChart, 500));
+    elements.yLabelInput.addEventListener('input', debounce(generateChart, 500));
+    elements.xLabelInput.addEventListener('input', debounce(generateChart, 500));
+    elements.yLabel2Input.addEventListener('input', debounce(generateChart, 500));
 
     // 移除自動生成功能，只有點擊按鈕才生成圖表
     // const inputElements = [
@@ -625,6 +632,15 @@ function getChartConfig(type, labels, datasets) {
                         display: elements.showGridCheckbox.checked,
                         color: 'rgba(0,0,0,0.1)'
                     },
+                    title: {
+                        display: !!elements.xLabelInput.value,
+                        text: elements.xLabelInput.value,
+                        font: {
+                            size: 14,
+                            weight: 'bold'
+                        },
+                        color: '#2c3e50'
+                    },
                     ticks: {
                         padding: 10,
                         maxRotation: 45,
@@ -663,6 +679,15 @@ function getChartConfig(type, labels, datasets) {
                         display: elements.showGridCheckbox.checked,
                         color: 'rgba(0,0,0,0.1)'
                     },
+                    title: {
+                        display: !!elements.xLabelInput.value,
+                        text: elements.xLabelInput.value,
+                        font: {
+                            size: 14,
+                            weight: 'bold'
+                        },
+                        color: '#2c3e50'
+                    },
                     ticks: {
                         padding: 10,
                         maxRotation: 45,
@@ -700,6 +725,15 @@ function getChartConfig(type, labels, datasets) {
                     grid: {
                         display: elements.showGridCheckbox.checked,
                         color: 'rgba(0,0,0,0.1)'
+                    },
+                    title: {
+                        display: !!elements.xLabelInput.value,
+                        text: elements.xLabelInput.value,
+                        font: {
+                            size: 14,
+                            weight: 'bold'
+                        },
+                        color: '#2c3e50'
                     },
                     ticks: {
                         padding: 10,
@@ -751,6 +785,7 @@ function downloadChart() {
 function resetChart() {
     if (confirm('確定要重設所有設定嗎？')) {
         elements.yLabelInput.value = '銷售額';
+        elements.xLabelInput.value = '月份';
         elements.yLabel2Input.value = '利潤';
         elements.chartTitleInput.value = 'LPMS數據分析報告';
         elements.chartColorInput.value = '#3498db';
