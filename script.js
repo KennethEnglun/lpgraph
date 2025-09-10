@@ -259,6 +259,11 @@ function getMixedChartType() {
     return selectedRadio ? selectedRadio.value : 'double-bar';
 }
 
+// X軸範圍配置函數 - 返回空對象，範圍控制通過數據過濾實現
+function getXAxisRangeConfig(labels) {
+    return {}; // 範圍控制通過過濾數據實現，不在這裡處理
+}
+
 // 縮放功能
 function zoomIn() {
     if (currentZoom < MAX_ZOOM) {
@@ -320,7 +325,45 @@ function getDataFromGrid() {
         }
     });
     
-    return { labels, values, values2, colors };
+    // 根據X軸範圍設定過濾數據
+    return filterDataByXAxisRange({ labels, values, values2, colors });
+}
+
+// 根據X軸範圍設定過濾數據
+function filterDataByXAxisRange(data) {
+    if (elements.autoScaleXCheckbox.checked) {
+        return data; // 自動調節，返回所有數據
+    }
+    
+    const minValue = parseFloat(elements.xMinInput.value);
+    const maxValue = parseFloat(elements.xMaxInput.value);
+    
+    if (isNaN(minValue) && isNaN(maxValue)) {
+        return data; // 沒有設定範圍，返回所有數據
+    }
+    
+    let startIndex = 0;
+    let endIndex = data.labels.length;
+    
+    if (!isNaN(minValue)) {
+        startIndex = Math.max(0, Math.floor(minValue) - 1);
+    }
+    
+    if (!isNaN(maxValue)) {
+        endIndex = Math.min(data.labels.length, Math.ceil(maxValue));
+    }
+    
+    // 確保範圍有效
+    if (startIndex >= endIndex) {
+        return data; // 無效範圍，返回所有數據
+    }
+    
+    return {
+        labels: data.labels.slice(startIndex, endIndex),
+        values: data.values.slice(startIndex, endIndex),
+        values2: data.values2.slice(startIndex, endIndex),
+        colors: data.colors.slice(startIndex, endIndex)
+    };
 }
 
 function getDatasets() {
@@ -622,11 +665,10 @@ function getChartConfig(type, labels, datasets) {
                     },
                     ticks: {
                         padding: 10,
-                        maxRotation: 45
-                    },
-                    // X軸範圍自動調節和手動設定
-                    min: elements.autoScaleXCheckbox.checked ? undefined : parseFloat(elements.xMinInput.value) || undefined,
-                    max: elements.autoScaleXCheckbox.checked ? undefined : parseFloat(elements.xMaxInput.value) || undefined
+                        maxRotation: 45,
+                        // X軸範圍控制 - 通過控制顯示的標籤數量
+                        ...(getXAxisRangeConfig(labels))
+                    }
                 }
             };
             break;
@@ -660,11 +702,10 @@ function getChartConfig(type, labels, datasets) {
                     },
                     ticks: {
                         padding: 10,
-                        maxRotation: 45
-                    },
-                    // X軸範圍自動調節和手動設定
-                    min: elements.autoScaleXCheckbox.checked ? undefined : parseFloat(elements.xMinInput.value) || undefined,
-                    max: elements.autoScaleXCheckbox.checked ? undefined : parseFloat(elements.xMaxInput.value) || undefined
+                        maxRotation: 45,
+                        // X軸範圍控制 - 通過控制顯示的標籤數量
+                        ...(getXAxisRangeConfig(labels))
+                    }
                 }
             };
             break;
@@ -698,11 +739,10 @@ function getChartConfig(type, labels, datasets) {
                     },
                     ticks: {
                         padding: 10,
-                        maxRotation: 45
-                    },
-                    // X軸範圍自動調節和手動設定
-                    min: elements.autoScaleXCheckbox.checked ? undefined : parseFloat(elements.xMinInput.value) || undefined,
-                    max: elements.autoScaleXCheckbox.checked ? undefined : parseFloat(elements.xMaxInput.value) || undefined
+                        maxRotation: 45,
+                        // X軸範圍控制 - 通過控制顯示的標籤數量
+                        ...(getXAxisRangeConfig(labels))
+                    }
                 }
             };
             datasets.forEach(dataset => {
